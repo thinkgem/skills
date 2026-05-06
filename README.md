@@ -2,8 +2,9 @@
 
 JeeSite 快速开发平台文档 Skills 集合，供 AI Agent 检索和调用。共 7 个子 Skill，覆盖 JeeSite 在线文档。
 
-Github: <https://github.com/thinkgem/skills>
-Gitee: <https://gitee.com/thinkgem/skills>
+* Gitee: <https://gitee.com/thinkgem/skills>
+* Github: <https://github.com/thinkgem/skills>
+* AtomGit: <https://atomgit.com/thinkgem/skills>
 
 ## Skills 列表
 
