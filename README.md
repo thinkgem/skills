@@ -31,6 +31,8 @@ JeeSite 快速开发平台文档 Skills 集合，供 AI Agent 检索和调用。
 ```bash
 # 添加 JeeSite 技能
 npx skills add thinkgem/skills -g
+# 或者
+npx skills add https://gitee.com/thinkgem/skills.git -g
 
 # 添加 Antdv Next 技能
 npx skills add antdv-next/skills -g
