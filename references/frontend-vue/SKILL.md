@@ -17,7 +17,7 @@ JeeSite Vue3 前端开发指南，包括安装部署、CRUD视图、表单、表
 
 ## 关键词
 
-Vue、Vue3、前端分离、CRUD、表单、Form、表格、Table、组件、权限、图标、国际化、样式、Webpack
+Vue、Vue3、前端分离、CRUD、表单、Form、表格、Table、组件、权限、图标、国际化、样式、Webpack、BasicForm、BasicTable、v-auth、Icon、i18n、Less、UnoCSS、Vite、TypeScript、Antdv、Vben Admin、Hooks、路由守卫、菜单权限、按钮权限、主题、编译打包、外部依赖、第三方库
 
 ## 触发场景
 
@@ -32,23 +32,34 @@ Vue、Vue3、前端分离、CRUD、表单、Form、表格、Table、组件、权
 - 样式主题怎么改
 - 如何引入外部依赖
 - Vue前端常见问题
+- BasicForm怎么用
+- BasicTable怎么用
+- v-auth指令
+- 路由守卫
+- 菜单权限
+- 按钮权限
+- 主题定制
+- 编译打包
+- Vite配置
+- TypeScript
+- Ant Design Vue
 
 ## 文档映射
 
-| 文档标题 | sidebarTitle | permalink | 完整URL | 主题 |
-|----------|-------------|-----------|---------|------|
-| 安装部署 | 快速开始、安装部署 | /vue-install-deploy/ | https://jeesite.com/docs/vue-install-deploy/ | Vue安装、环境搭建、编译打包 |
-| CRUD视图 | 源码解析、表单列表 | /vue-crud-view/ | https://jeesite.com/docs/vue-crud-view/ | CRUD、增删改查、视图开发、源码解析 |
-| 基础表单 | BasicForm 表单组件 | /vue-basic-form/ | https://jeesite.com/docs/vue-basic-form/ | 表单、Form、表单组件、BasicForm |
-| 基础表格 | BasicTable 表格组件 | /vue-basic-table/ | https://jeesite.com/docs/vue-basic-table/ | 表格、Table、列表组件、BasicTable |
-| 通用组件 | 常用组件库、Hooks | /vue-comp/ | https://jeesite.com/docs/vue-comp/ | 组件、Component、UI组件、Hooks |
-| 配置设置 | 配置参数、主题配置 | /vue-settings/ | https://jeesite.com/docs/vue-settings/ | 配置、设置、个性化、主题配置 |
-| 权限控制 | 前端权限、按钮权限 | /vue-auth/ | https://jeesite.com/docs/vue-auth/ | 权限、认证、菜单权限、按钮权限 |
-| 图标 | 图标 Icon Svg 组件 | /vue-icon/ | https://jeesite.com/docs/vue-icon/ | 图标、Icon、SVG |
-| 国际化 | 国际化、多语言 | /vue-i18n/ | https://jeesite.com/docs/vue-i18n/ | 国际化、i18n、多语言 |
-| 样式主题 | LessCSS 样式库 | /vue-style/ | https://jeesite.com/docs/vue-style/ | 样式、主题、CSS、LessCSS |
-| 引入外部依赖 | 引入外部依赖 | /webpack-lib/ | https://jeesite.com/docs/webpack-lib/ | Webpack、构建、第三方库、外部依赖 |
-| 常见问题 | 分离版常见问题 | /vue-faq/ | https://jeesite.com/docs/vue-faq/ | FAQ、常见问题、问题排查 |
+| 文档标题 | sidebarTitle | permalink | 摘要与关键章节 | 关联文档 |
+|----------|-------------|-----------|---------------|---------|
+| 安装部署 | 快速开始、安装部署 | /vue-install-deploy/ | Vue前端环境搭建、编译打包。关键章节：环境要求、安装步骤、打包部署 | /install-deploy/、/vue-faq/ |
+| CRUD视图 | 源码解析、表单列表 | /vue-crud-view/ | CRUD增删改查视图开发、源码解析。关键章节：列表页、表单页、详情页 | /vue-basic-form/、/vue-basic-table/ |
+| 基础表单 | BasicForm 表单组件 | /vue-basic-form/ | BasicForm表单组件用法。关键章节：表单配置、校验规则、联动 | /vue-crud-view/、/vue-comp/ |
+| 基础表格 | BasicTable 表格组件 | /vue-basic-table/ | BasicTable表格组件用法。关键章节：列配置、分页、排序、筛选 | /vue-crud-view/、/vue-comp/ |
+| 通用组件 | 常用组件库、Hooks | /vue-comp/ | 通用组件库、Hooks用法。关键章节：组件列表、Hooks API | /vue-basic-form/、/vue-basic-table/ |
+| 配置设置 | 配置参数、主题配置 | /vue-settings/ | 前端配置参数、主题设置。关键章节：应用配置、主题定制 | /vue-style/、/vue-i18n/ |
+| 权限控制 | 前端权限、按钮权限 | /vue-auth/ | 前端权限控制、v-auth指令、菜单权限。关键章节：权限指令、路由守卫 | /permi-shiro/、/vue-crud-view/ |
+| 图标 | 图标 Icon Svg 组件 | /vue-icon/ | 图标Icon使用、SVG组件。关键章节：内置图标、自定义图标 | /vue-comp/ |
+| 国际化 | 国际化、多语言 | /vue-i18n/ | 前端国际化i18n、多语言配置。关键章节：语言包、切换语言 | /i18n-locale/、/vue-settings/ |
+| 样式主题 | LessCSS 样式库 | /vue-style/ | LessCSS样式库、主题定制。关键章节：样式变量、主题切换 | /vue-settings/ |
+| 引入外部依赖 | 引入外部依赖 | /webpack-lib/ | Webpack构建、引入第三方库。关键章节：依赖引入、构建配置 | /vue-install-deploy/ |
+| 常见问题 | 分离版常见问题 | /vue-faq/ | Vue前端常见问题排查。关键章节：安装问题、编译问题、运行问题 | /vue-install-deploy/、/faq/ |
 
 ## 检索策略
 

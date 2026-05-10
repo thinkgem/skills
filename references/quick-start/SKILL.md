@@ -17,7 +17,7 @@ JeeSite 平台基础知识，包括平台简介、架构特点、技术选型、
 
 ## 关键词
 
-简介、概述、架构、技术选型、功能、标准、目录、配置、树表、Vue、升级
+简介、概述、架构、技术选型、功能、标准、目录、配置、树表、Vue、升级、更新日志、版本、Spring Boot、MyBatis、Vue3、Antdv、安全、性能、规范、编码规范、命名规范、项目结构、文件组织、application.yml、参数配置、树形结构、数据表设计、前后分离、Vben Admin、changelog
 
 ## 触发场景
 
@@ -33,21 +33,30 @@ JeeSite 平台基础知识，包括平台简介、架构特点、技术选型、
 - JeeSite Vue
 - 如何升级
 - 更新日志
+- 版本变更
+- 编码规范
+- 命名规范
+- 项目结构
+- 文件组织
+- 前后分离版介绍
+- 平台优势
+- 核心优势
+- 发展史
 
 ## 文档映射
 
-| 文档标题 | sidebarTitle | permalink | 完整URL | 主题 |
-|----------|-------------|-----------|---------|------|
-| 平台简介 | 平台简介 | /overview/ | https://jeesite.com/docs/overview/ | 平台介绍、核心优势、发展史 |
-| 架构特点 | 架构特点 | /feature/ | https://jeesite.com/docs/feature/ | 架构特点、安全、优势 |
-| 技术选型 | 技术选型 | /technology/ | https://jeesite.com/docs/technology/ | 技术栈、Spring Boot、MyBatis、Vue3 |
-| 功能介绍 | 功能介绍 | /function/ | https://jeesite.com/docs/function/ | 功能模块、系统功能、核心功能 |
-| 标准规范 | 标准规范 | /standard/ | https://jeesite.com/docs/standard/ | 编码规范、开发规范、命名规范 |
-| 目录结构 | 目录结构 | /catalog/ | https://jeesite.com/docs/catalog/ | 目录结构、项目结构、文件组织 |
-| 参数配置 | 参数配置 | /config/ | https://jeesite.com/docs/config/ | 配置文件、application.yml、参数配置 |
-| 树表结构 | 树表结构 | /treetable/ | https://jeesite.com/docs/treetable/ | 树表、树形结构、数据表设计 |
-| JeeSite Vue | JeeSite Vue | /jeesite-vue/ | https://jeesite.com/docs/jeesite-vue/ | Vue3、前端分离、Vben Admin |
-| 更新日志 | 平台更新日志 | /upgrade/ | https://jeesite.com/docs/upgrade/ | 升级、更新日志、版本变更 |
+| 文档标题 | sidebarTitle | permalink | 摘要与关键章节 | 关联文档 |
+|----------|-------------|-----------|---------------|---------|
+| 平台简介 | 平台简介 | /overview/ | 平台介绍、核心优势、发展史。关键章节：平台介绍、发展史 | /feature/、/technology/ |
+| 架构特点 | 架构特点 | /feature/ | 架构特点、安全机制、平台优势。关键章节：架构特点、安全、优势 | /overview/、/technology/ |
+| 技术选型 | 技术选型 | /technology/ | 技术栈详解：Spring Boot、MyBatis、Vue3、Beetl。关键章节：后端技术、前端技术 | /feature/、/jeesite-vue/ |
+| 功能介绍 | 功能介绍 | /function/ | 功能模块全景：系统管理、代码生成、工作流等。关键章节：内置功能、核心功能 | /overview/、/bpm/ |
+| 标准规范 | 标准规范 | /standard/ | 编码规范、开发规范、命名规范。关键章节：Java规范、Vue规范、数据库规范 | /catalog/、/code-gen/ |
+| 目录结构 | 目录结构 | /catalog/ | 项目目录结构、文件组织说明。关键章节：后端目录、前端目录 | /standard/、/install-deploy/ |
+| 参数配置 | 参数配置 | /config/ | application.yml 配置参数详解。关键章节：核心配置、数据源配置 | /install-deploy/、/faq/ |
+| 树表结构 | 树表结构 | /treetable/ | 树形结构数据表设计与实现。关键章节：数据表设计、代码生成 | /code-gen/、/dao-mybatis/ |
+| JeeSite Vue | JeeSite Vue | /jeesite-vue/ | Vue3 前后分离版介绍、Vben Admin。关键章节：技术栈、与经典版区别 | /vue-install-deploy/、/technology/ |
+| 更新日志 | 平台更新日志 | /upgrade/ | 版本更新日志、升级方法。关键章节：最新版本、升级步骤 | /install-deploy/、/support/ |
 
 ## 检索策略
 
