@@ -7,13 +7,15 @@ description: "JeeSite快速开发平台文档总索引。Invoke when user asks a
 
 JeeSite 快速开发平台文档 Skills 集合，供 AI Agent 检索和调用。
 
-## 文档获取方式
+## 使用流程
 
-按需缓存，有效期3天。优先从本地缓存读取，缓存过期或不存在时自动下载并转换为 Markdown：
-
-- **缓存目录**: `references/.cache/<skill-name>/`（权限不足时自动回退到 `~/.cache/jeesite/<skill-name>/`）
-- **按需缓存**: `python3 scripts/cache_docs.py --skill <skill-name> --permalink <permalink>`
-- **强制更新**: `python3 scripts/cache_docs.py --skill <skill-name> --permalink <permalink> --force`
+1. **匹配 Skill**：根据用户问题，在「Skills 列表」或「快速路由参考」中找到最相关的 skill-name
+2. **加载子 Skill**：读取 `references/<skill-name>/SKILL.md` 获取详细文档映射
+3. **匹配文档**：在子 Skill 的「文档映射」表中找到最相关的 permalink
+4. **获取缓存**：执行 `python3 scripts/cache_docs.py --skill <skill-name> --permalink <permalink>` 脚本，缓存目录为 `references/.cache/<skill-name>/`，不存在时自动回退到 `~/.cache/jeesite/<skill-name>/`
+5. **读取内容**：先读 `__00.md` 目录索引文件，了解章节结构，按需读取 `__01.md`~`__NN.md`
+6. **回答问题**：缓存文件有效期3天，自动更新缓存，并基于读取的文档内容回答
+7. **跨 Skill 场景**：如问题涉及多个领域，可同时加载多个子 Skill（见「跨 Skill 关联」）
 
 ## Skills 列表
 
@@ -26,17 +28,6 @@ JeeSite 快速开发平台文档 Skills 集合，供 AI Agent 检索和调用。
 | extend-fun     | 扩展功能专题  | BPM工作流、AI相关、CMS、SSO、OAuth2、定时任务、对象存储等扩展功能 |
 | cloud-arch     | 云服务技术架构 | SaaS、集群、微服务、分布式事务等云服务架构                   |
 | support        | 技术支持与服务 | 技术支持服务、版本区别、联系方式                          |
-
-## 路由策略
-
-1. 根据用户问题，匹配上表中最相关的 Skill name
-2. 加载对应 `references/<name>/SKILL.md` 获取详细文档映射
-3. 根据文档映射表定位具体文档，获取 permalink
-4. 执行缓存命令：`python3 scripts/cache_docs.py --skill <name> --permalink <permalink>`
-   - 若缓存有效（3天内），直接返回缓存文件路径
-   - 若缓存过期或不存在，自动下载并转换为 Markdown 保存
-5. 使用 Read 工具读取缓存文件
-6. 如果用户问题跨多个 Skill，可同时加载多个子 Skill
 
 ## 快速路由参考
 

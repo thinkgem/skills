@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Copyright (c) 2013-Now https://jeesite.com All rights reserved.
+# No deletion without permission, or be held responsible to law.
 """
 JeeSite 文档按需缓存脚本
 
@@ -25,9 +27,11 @@ import os
 import re
 import sys
 import json
+import hashlib
 import argparse
 from pathlib import Path
 from datetime import datetime, timedelta
+from urllib.parse import urljoin, urlparse
 
 import requests
 import html2text
@@ -172,6 +176,158 @@ def fetch_and_convert(url: str) -> str | None:
         return None
 
 
+def download_images(markdown: str, doc_url: str, skill_name: str, cache_file_dir: Path) -> str:
+    """
+    下载文档中引用的图片到本地缓存，并替换 Markdown 中的图片链接。
+    支持相对路径和绝对 URL。
+    cache_file_dir: 缓存 Markdown 文件所在目录，用于计算图片相对路径。
+    """
+    img_pattern = re.compile(r'!\[([^\]]*)\]\(([^)]+)\)')
+    img_cache_dir = CACHE_DIR / "images" / skill_name
+    img_cache_dir.mkdir(parents=True, exist_ok=True)
+
+    def replace_img(match):
+        alt_text = match.group(1)
+        img_src = match.group(2).strip()
+
+        if not img_src:
+            return match.group(0)
+
+        img_url = img_src
+        if not img_url.startswith(("http://", "https://")):
+            img_url = urljoin(doc_url, img_url)
+
+        url_hash = hashlib.md5(img_url.encode()).hexdigest()[:12]
+        parsed = urlparse(img_url)
+        ext = os.path.splitext(parsed.path)[1]
+        if not ext or len(ext) > 6:
+            ext = ".png"
+        local_name = f"{url_hash}{ext}"
+        local_path = img_cache_dir / local_name
+
+        if not local_path.exists():
+            try:
+                img_resp = requests.get(img_url, timeout=REQUEST_TIMEOUT, headers={
+                    "User-Agent": "JeeSite-Docs-Cache/2.0",
+                })
+                img_resp.raise_for_status()
+                local_path.write_bytes(img_resp.content)
+            except requests.RequestException as e:
+                print(f"WARN: 图片下载失败 {img_url} - {e}", file=sys.stderr)
+                return match.group(0)
+
+        relative_path = os.path.relpath(str(local_path), str(cache_file_dir))
+        return f"![{alt_text}]({relative_path})"
+
+    return img_pattern.sub(replace_img, markdown)
+
+
+def split_document(markdown: str, title: str, url: str, cache_path: Path) -> list[Path]:
+    """
+    按一级标题（##）将文档拆分为多个子文件。
+    前言部分保留在主索引文件中，仅 ## 章节拆分为独立子文件。
+    每个子文件包含：文档标题头部、章节内容、章节导航。
+    返回拆分后的文件路径列表（不含主索引文件）。
+    """
+    stem = cache_path.stem
+    parent_dir = cache_path.parent
+    
+    # 索引文件使用 __00.md 命名，确保在所有系统中排在最前面
+    index_filename = f"{stem}__00.md"
+    index_path = parent_dir / index_filename
+    
+    # 清理旧的缓存文件：明确删除不带 __ 的主文件和所有 __*.md 拆分文件
+    deleted_count = 0
+    
+    # 1. 删除旧的主文件（如 code-gen.md）
+    old_main_file = parent_dir / f"{stem}.md"
+    if old_main_file.exists() and old_main_file != cache_path:
+        try:
+            old_main_file.unlink()
+            deleted_count += 1
+            print(f"CLEANUP: 删除旧主文件 {old_main_file.name}", file=sys.stderr)
+        except Exception as e:
+            print(f"WARN: 删除旧主文件失败 {old_main_file.name} - {e}", file=sys.stderr)
+    
+    # 2. 删除所有旧的拆分文件（如 code-gen__01.md, code-gen__00.md 等）
+    old_split_files = list(parent_dir.glob(f"{stem}__*.md"))
+    for old_file in old_split_files:
+        try:
+            old_file.unlink()
+            deleted_count += 1
+        except Exception as e:
+            print(f"WARN: 删除旧拆分文件失败 {old_file.name} - {e}", file=sys.stderr)
+    
+    if deleted_count > 0:
+        print(f"CLEANUP: 共删除 {deleted_count} 个旧文件", file=sys.stderr)
+
+    lines = markdown.split("\n")
+    preamble_lines = []
+    chapters = []
+    current_chapter = []
+    current_heading = ""
+    in_preamble = True
+
+    for line in lines:
+        if re.match(r'^##\s+', line):
+            in_preamble = False
+            if current_chapter:
+                chapters.append((current_heading, "\n".join(current_chapter)))
+            current_heading = line.strip()
+            current_chapter = [line]
+        elif in_preamble:
+            # 过滤掉重复的标题和元信息行
+            if not re.match(r'^#\s+', line) and not re.match(r'^>\s*(来源|缓存时间|章节):', line):
+                preamble_lines.append(line)
+        else:
+            current_chapter.append(line)
+
+    if current_chapter:
+        chapters.append((current_heading, "\n".join(current_chapter)))
+
+    # 如果没有章节（纯前言文档），创建一个空章节
+    if not chapters:
+        chapters.append(("", ""))
+
+    split_files = []
+
+    for i, (heading, content) in enumerate(chapters):
+        chapter_num = i + 1
+        chapter_title = heading.lstrip("#").strip() if heading else "概述"
+        split_filename = f"{stem}__{chapter_num:02d}.md"
+        split_path = parent_dir / split_filename
+
+        header = f"# {title}\n\n> 来源: {url}\n> 缓存时间: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n> 章节: {chapter_num}/{len(chapters)} - {chapter_title}\n\n"
+
+        nav_lines = ["\n---\n\n**章节导航：**\n"]
+        if i > 0:
+            prev_file = f"{stem}__{i:02d}.md"
+            nav_lines.append(f"- [上一章：{chapters[i-1][0].lstrip('#').strip() if chapters[i-1][0] else '概述'}]({prev_file})\n")
+        if i < len(chapters) - 1:
+            next_file = f"{stem}__{i+2:02d}.md"
+            nav_lines.append(f"- [下一章：{chapters[i+1][0].lstrip('#').strip() if chapters[i+1][0] else '概述'}]({next_file})\n")
+        nav_lines.append(f"- [返回目录]({index_filename})\n")
+
+        full_content = header + content + "".join(nav_lines)
+        split_path.write_text(full_content, encoding="utf-8")
+        split_files.append(split_path)
+
+    preamble = "\n".join(preamble_lines).strip()
+    
+    index_lines = [f"# {title} - 目录\n\n", f"> 来源: {url}\n> 缓存时间: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n> 共 {len(chapters)} 个章节\n"]
+    if preamble:
+        index_lines.append("\n---\n\n" + preamble)
+    index_lines.append("\n---\n\n")
+    for i, (heading, _) in enumerate(chapters):
+        chapter_title = heading.lstrip("#").strip() if heading else "概述"
+        split_filename = f"{stem}__{i+1:02d}.md"
+        index_lines.append(f"{i+1}. [{chapter_title}]({split_filename})\n")
+
+    index_path.write_text("".join(index_lines), encoding="utf-8")
+
+    return split_files
+
+
 def parse_skill_md(skill_md_path: Path) -> dict:
     """
     解析 SKILL.md 文件，提取 name 和文档映射表中的 permalink、url 信息。
@@ -290,6 +446,11 @@ def cache_page(skill_name: str, permalink: str, force: bool = False) -> str:
     filename = permalink_to_filename(permalink)
     skill_cache_dir = CACHE_DIR / skill_name
     cache_path = skill_cache_dir / filename
+    
+    # 索引文件使用 __00.md 命名
+    stem = cache_path.stem
+    index_filename = f"{stem}__00.md"
+    index_path = skill_cache_dir / index_filename
 
     manifest = load_manifest()
     skill_manifest = manifest["skills"].get(skill_name, {"documents": {}})
@@ -298,12 +459,12 @@ def cache_page(skill_name: str, permalink: str, force: bool = False) -> str:
 
     doc_manifest = skill_manifest["documents"].get(permalink, {})
 
-    if not force and cache_path.exists():
+    if not force and index_path.exists():
         cached_at = doc_manifest.get("updatedAt", "")
         if cached_at and not is_cache_expired(cached_at):
             print(f"CACHED: {title} (缓存有效，{cached_at[:10]})")
-            print(f"FILE: {cache_path}")
-            return str(cache_path)
+            print(f"FILE: {index_path}")
+            return str(index_path)
         else:
             print(f"EXPIRED: {title} (缓存已过期，需更新)")
 
@@ -311,28 +472,43 @@ def cache_page(skill_name: str, permalink: str, force: bool = False) -> str:
 
     markdown = fetch_and_convert(url)
     if markdown is None:
-        if cache_path.exists():
-            print(f"FALLBACK: 使用过期缓存 {cache_path}")
-            return str(cache_path)
+        if index_path.exists():
+            print(f"FALLBACK: 使用过期缓存 {index_path}")
+            return str(index_path)
         return ""
 
     header = f"# {title}\n\n> 来源: {url}\n> 缓存时间: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n\n"
     full_content = header + markdown
 
+    full_content = download_images(full_content, url, skill_name, skill_cache_dir)
+
     skill_cache_dir.mkdir(parents=True, exist_ok=True)
     cache_path.write_text(full_content, encoding="utf-8")
+
+    split_files = split_document(full_content, title, url, cache_path)
+    
+    # 删除临时主文件，只保留索引文件和拆分文件
+    if cache_path.exists():
+        try:
+            cache_path.unlink()
+        except Exception as e:
+            print(f"WARN: 删除临时文件失败 {cache_path.name} - {e}", file=sys.stderr)
+    
+    # 返回索引文件路径（__00.md）
+    result_path = index_path if index_path.exists() else cache_path
 
     skill_manifest["documents"][permalink] = {
         "title": title,
         "url": url,
-        "file": str(cache_path.relative_to(CACHE_DIR)),
+        "file": str(index_path.relative_to(CACHE_DIR)),
+        "splitFiles": [str(p.relative_to(CACHE_DIR)) for p in split_files],
         "updatedAt": datetime.now().isoformat(),
     }
     manifest["skills"][skill_name] = skill_manifest
     save_manifest(manifest)
 
-    print(f"SAVED: {cache_path} ({len(full_content)} 字符)")
-    return str(cache_path)
+    print(f"SAVED: {result_path} ({len(full_content)} 字符)")
+    return str(result_path)
 
 
 def discover_skills() -> list[dict]:

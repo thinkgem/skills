@@ -7,13 +7,12 @@ description: "检索JeeSite Vue前端开发文档（CRUD、表单、表格、组
 
 JeeSite Vue3 前端开发指南，包括安装部署、CRUD视图、表单、表格、组件、权限、国际化等。
 
-## 文档获取方式
+## 使用流程
 
-按需缓存，有效期3天。优先从本地缓存读取，缓存过期或不存在时自动下载并转换为 Markdown：
-
-- **缓存目录**: `references/.cache/frontend-vue/`（权限不足时自动回退到 `~/.cache/jeesite/frontend-vue/`）
-- **缓存命令**: `python3 scripts/cache_docs.py --skill frontend-vue --permalink <permalink>`
-- **强制更新**: `python3 scripts/cache_docs.py --skill frontend-vue --permalink <permalink> --force`
+1. **匹配文档**：根据用户问题，在「文档映射」表中查找最相关的 permalink
+2. **获取缓存**：执行 `python3 scripts/cache_docs.py --skill frontend-vue --permalink <permalink>` 脚本，缓存目录为 `references/.cache/frontend-vue/`，不存在时自动回退到 `~/.cache/jeesite/frontend-vue/`
+3. **读取内容**：先读 `__00.md` 目录索引文件，了解章节结构，按需读取 `__01.md`~`__NN.md`
+4. **回答问题**：缓存文件有效期3天，自动更新缓存，并基于读取的文档内容回答
 
 ## 关键词
 
@@ -60,16 +59,6 @@ Vue、Vue3、前端分离、CRUD、表单、Form、表格、Table、组件、权
 | 样式主题 | LessCSS 样式库 | /vue-style/ | LessCSS样式库、主题定制。关键章节：样式变量、主题切换 | /vue-settings/ |
 | 引入外部依赖 | 引入外部依赖 | /webpack-lib/ | Webpack构建、引入第三方库。关键章节：依赖引入、构建配置 | /vue-install-deploy/ |
 | 常见问题 | 分离版常见问题 | /vue-faq/ | Vue前端常见问题排查。关键章节：安装问题、编译问题、运行问题 | /vue-install-deploy/、/faq/ |
-
-## 检索策略
-
-1. 根据用户问题匹配"触发场景"或"关键词"
-2. 在"文档映射"表中定位最相关的文档，获取 permalink
-3. 执行缓存命令：`python3 scripts/cache_docs.py --skill frontend-vue --permalink <permalink>`
-   - 若缓存有效（3天内），直接返回缓存文件路径
-   - 若缓存过期或不存在，自动下载并转换为 Markdown 保存
-4. 使用 Read 工具读取返回的缓存文件路径
-5. 基于文档内容回答用户
 
 ## 常见问题映射
 

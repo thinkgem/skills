@@ -7,13 +7,12 @@ description: "检索JeeSite技术支持与服务文档。Invoke when user asks a
 
 JeeSite 技术支持服务，包括版本区别、联系方式、授权许可等。
 
-## 文档获取方式
+## 使用流程
 
-按需缓存，有效期3天。优先从本地缓存读取，缓存过期或不存在时自动下载并转换为 Markdown：
-
-- **缓存目录**: `references/.cache/support/`（权限不足时自动回退到 `~/.cache/jeesite/support/`）
-- **缓存命令**: `python3 scripts/cache_docs.py --skill support --permalink <permalink>`
-- **强制更新**: `python3 scripts/cache_docs.py --skill support --permalink <permalink> --force`
+1. **匹配文档**：根据用户问题，在「文档映射」表中查找最相关的 permalink
+2. **获取缓存**：执行 `python3 scripts/cache_docs.py --skill support --permalink <permalink>` 脚本，缓存目录为 `references/.cache/support/`，不存在时自动回退到 `~/.cache/jeesite/support/`
+3. **读取内容**：先读 `__00.md` 目录索引文件，了解章节结构，按需读取 `__01.md`~`__NN.md`
+4. **回答问题**：缓存文件有效期3天，自动更新缓存，并基于读取的文档内容回答
 
 ## 关键词
 
@@ -33,15 +32,6 @@ JeeSite 技术支持服务，包括版本区别、联系方式、授权许可等
 |----------|-------------|-----------|---------------|---------|
 | 技术支持 | 版本区别、联系我们 | /support/ | 技术支持服务、版本区别、授权方案、联系方式。关键章节：版本区别、联系我们 | /overview/、/feature/ |
 
-## 检索策略
-
-1. 根据用户问题匹配"触发场景"或"关键词"
-2. 在"文档映射"表中定位最相关的文档，获取 permalink
-3. 执行缓存命令：`python3 scripts/cache_docs.py --skill support --permalink <permalink>`
-   - 若缓存有效（3天内），直接返回缓存文件路径
-   - 若缓存过期或不存在，自动下载并转换为 Markdown 保存
-4. 使用 Read 工具读取返回的缓存文件路径
-5. 基于文档内容回答用户
 
 ## 常见问题映射
 

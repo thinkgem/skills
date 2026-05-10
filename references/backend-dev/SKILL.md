@@ -7,13 +7,12 @@ description: "检索JeeSite后端开发文档（安装部署、代码生成、DA
 
 JeeSite 后端开发指南，包括安装部署、代码生成、持久层、业务层、控制层、权限认证等。
 
-## 文档获取方式
+## 使用流程
 
-按需缓存，有效期3天。优先从本地缓存读取，缓存过期或不存在时自动下载并转换为 Markdown：
-
-- **缓存目录**: `references/.cache/backend-dev/`（权限不足时自动回退到 `~/.cache/jeesite/backend-dev/`）
-- **缓存命令**: `python3 scripts/cache_docs.py --skill backend-dev --permalink <permalink>`
-- **强制更新**: `python3 scripts/cache_docs.py --skill backend-dev --permalink <permalink> --force`
+1. **匹配文档**：根据用户问题，在「文档映射」表中查找最相关的 permalink
+2. **获取缓存**：执行 `python3 scripts/cache_docs.py --skill backend-dev --permalink <permalink>` 脚本，缓存目录为 `references/.cache/backend-dev/`，不存在时自动回退到 `~/.cache/jeesite/backend-dev/`
+3. **读取内容**：先读 `__00.md` 目录索引文件，了解章节结构，按需读取 `__01.md`~`__NN.md`
+4. **回答问题**：缓存文件有效期3天，自动更新缓存，并基于读取的文档内容回答
 
 ## 关键词
 
@@ -58,16 +57,6 @@ JeeSite 后端开发指南，包括安装部署、代码生成、持久层、业
 | 数据库管理 | 动态维护数据、表、实体 | /dbm/ | 数据库管理、数据表建模、数据源管理。关键章节：表建模、实体生成 | /code-gen/、/dao-mybatis/ |
 | REST API | REST API | /mobile-rest-api/ | REST接口开发、API规范、移动端接口。关键章节：接口规范、认证方式 | /uniapp/、/permi-shiro/ |
 | 常见问题 | 常见问题 | /faq/ | 后端常见问题排查。关键章节：环境问题、配置问题、运行问题 | /install-deploy/、/config/ |
-
-## 检索策略
-
-1. 根据用户问题匹配"触发场景"或"关键词"
-2. 在"文档映射"表中定位最相关的文档，获取 permalink
-3. 执行缓存命令：`python3 scripts/cache_docs.py --skill backend-dev --permalink <permalink>`
-   - 若缓存有效（3天内），直接返回缓存文件路径
-   - 若缓存过期或不存在，自动下载并转换为 Markdown 保存
-4. 使用 Read 工具读取返回的缓存文件路径
-5. 基于文档内容回答用户
 
 ## 常见问题映射
 
