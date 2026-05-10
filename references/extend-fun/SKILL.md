@@ -10,7 +10,7 @@ JeeSite 扩展功能开发指南，包括 BPM 工作流、CMS 内容管理、消
 ## 使用流程
 
 1. **匹配文档**：根据用户问题，在「文档映射」表中查找最相关的 permalink
-2. **获取缓存**：执行 `python3 scripts/cache_docs.py --skill extend-fun --permalink <permalink>` 脚本，缓存目录为 `references/.cache/extend-fun/`，不存在时自动回退到 `~/.cache/jeesite/extend-fun/`
+2. **获取缓存**：在 jeesite skills 根目录下执行 `python3 scripts/cache_docs.py --skill extend-fun --permalink <permalink>` 脚本，缓存目录为 `references/.cache/extend-fun/`，不存在时自动回退到 `~/.cache/jeesite/extend-fun/`
 3. **读取内容**：先读 `__00.md` 目录索引文件，了解章节结构，按需读取 `__01.md`~`__NN.md`
 4. **回答问题**：缓存文件有效期3天，自动更新缓存，并基于读取的文档内容回答
 
