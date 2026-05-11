@@ -1,6 +1,6 @@
 ---
 name: "quick-start"
-description: "检索JeeSite平台基础知识文档（简介、架构、技术选型、功能介绍等）。Invoke when user asks about JeeSite overview, architecture, tech stack, or platform basics."
+description: "检索JeeSite平台基础知识文档（简介、架构、技术选型、功能介绍、更新日志等）。Invoke when user asks about JeeSite overview, architecture, tech stack, platform basics, version support, database compatibility, or bug fixes."
 ---
 
 # 快速了解
@@ -16,7 +16,7 @@ JeeSite 平台基础知识，包括平台简介、架构特点、技术选型、
 
 ## 关键词
 
-简介、概述、架构、技术选型、功能、标准、目录、配置、树表、Vue、升级、更新日志、版本、Spring Boot、MyBatis、Vue3、Antdv、安全、性能、规范、编码规范、命名规范、项目结构、文件组织、application.yml、参数配置、树形结构、数据表设计、前后分离、Vben Admin、changelog
+简介、概述、架构、技术选型、功能、标准、目录、配置、树表、Vue、升级、更新日志、版本、Spring Boot、MyBatis、Vue3、Antdv、安全、性能、规范、编码规范、命名规范、项目结构、文件组织、application.yml、参数配置、树形结构、数据表设计、前后分离、Vben Admin、changelog、版本支持、数据库支持、达梦、MySQL、Oracle、PostgreSQL、SQL Server、版本特性、新增功能、兼容性、修复、bug、问题、优化、bugfix、修复版本、问题修复、bug修复、功能修复、性能优化
 
 ## 触发场景
 
@@ -29,7 +29,7 @@ JeeSite 平台基础知识，包括平台简介、架构特点、技术选型、
 - 目录结构
 - 配置参数
 - 树表结构
-- JeeSite Vue
+- Vue分离版简介
 - 如何升级
 - 更新日志
 - 版本变更
@@ -41,6 +41,8 @@ JeeSite 平台基础知识，包括平台简介、架构特点、技术选型、
 - 平台优势
 - 核心优势
 - 发展史
+- 什么版本支持什么
+- 在哪个版本优化或修复
 
 ## 文档映射
 
@@ -55,7 +57,7 @@ JeeSite 平台基础知识，包括平台简介、架构特点、技术选型、
 | 参数配置 | 参数配置 | /config/ | application.yml 配置参数详解。关键章节：核心配置、数据源配置 | /install-deploy/、/faq/ |
 | 树表结构 | 树表结构 | /treetable/ | 树形结构数据表设计与实现。关键章节：数据表设计、代码生成 | /code-gen/、/dao-mybatis/ |
 | JeeSite Vue | JeeSite Vue | /jeesite-vue/ | Vue3 前后分离版介绍、Vben Admin。关键章节：技术栈、与经典版区别 | /vue-install-deploy/、/technology/ |
-| 更新日志 | 平台更新日志 | /upgrade/ | 版本更新日志、升级方法。关键章节：最新版本、升级步骤 | /install-deploy/、/support/ |
+| 更新日志 | 平台更新日志 | /upgrade/ | 版本更新日志、升级方法、功能支持版本、Bug修复记录。关键章节：最新版本、升级步骤、各版本新增功能、数据库支持、技术栈变更、问题修复记录、性能优化 | /install-deploy/、/support/ |
 
 
 ## 常见问题映射
@@ -69,3 +71,5 @@ JeeSite 平台基础知识，包括平台简介、架构特点、技术选型、
 | 目录结构是怎样的？ | 目录结构 | https://jeesite.com/docs/catalog/ |
 | 如何配置参数？ | 参数配置 | https://jeesite.com/docs/config/ |
 | 如何升级？ | 更新日志 | https://jeesite.com/docs/upgrade/ |
+| 什么版本支持什么？ | 更新日志 | https://jeesite.com/docs/upgrade/ |
+| 在哪个版本优化或修复？ | 更新日志 | https://jeesite.com/docs/upgrade/ |
