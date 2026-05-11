@@ -45,7 +45,7 @@ npx skills add antdv-next/skills -g
 npx skills add antfu/skills --skill='*' -g
 
 # 添加 Spring Boot 技能
-npx skills add github/awesome-copilot --skill java-springboot
+npx skills add github/awesome-copilot --skill java-springboot -g
 ```
 
 推荐：添加 -g 参数，全局安装。
