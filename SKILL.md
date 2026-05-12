@@ -19,15 +19,16 @@ JeeSite 快速开发平台文档 Skills 集合，供 AI Agent 检索和调用。
 
 ## Skills 列表
 
-| Skill name  | 名称      | 说明     |
-|-------------|---------|----------|
-| quick-start | 快速了解 | 平台简介、架构特点、技术选型、功能介绍等基础知识、更新日志、升级方法 |
-| backend-dev | 后端开发手册 | 安装部署、代码生成、DAO、数据权限、Shiro等后端开发指南 |
-| frontend-vue | Vue前端手册 | 前端安装、前端CRUD、表单、表格、组件、权限等前端开发指南 |
-| frontend-beetl | 经典前端手册 | Beetl视图、Form、DataGrid、JS框架等经典前端开发指南 |
-| extend-fun | 扩展功能专题 | BPM工作流、AI相关、CMS、SSO、OAuth2、定时任务、对象存储等扩展功能 |
-| cloud-arch | 云服务技术架构 | SaaS、集群、微服务、分布式事务等云服务架构 |
-| support | 技术支持与服务 | 技术支持服务、版本区别、联系方式 |
+| Skill name     | 名称    | 说明   |
+|----------------|---------|---------|
+| jeesite        | JeeSite | JeeSite 平台文档总索引  |
+| quick-start    | 快速了解    | 平台简介、架构特点、技术选型、功能介绍等基础知识、更新日志、升级方法 |
+| backend-dev    | 后端开发手册  | 安装部署、代码生成、DAO、@Table、数据权限、Shiro等后端开发指南 |
+| frontend-vue   | Vue前端手册 | 前端安装、前端CRUD、表单、表格、组件、权限等前端开发指南 |
+| frontend-beetl | 经典前端手册  | Beetl视图、Form、DataGrid、JS框架等经典前端开发指南 |
+| extend-fun     | 扩展功能专题  | BPM工作流、AI相关、CMS、SSO、OAuth2、定时任务、对象存储等扩展功能 |
+| cloud-arch     | 云服务技术架构 | SaaS、集群、微服务、分布式事务等云服务架构 |
+| support        | 技术支持与服务 | 技术支持服务、版本区别、联系方式 |
 
 ## 快速路由参考
 
