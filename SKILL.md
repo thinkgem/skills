@@ -26,7 +26,7 @@ JeeSite 快速开发平台文档 Skills 集合，供 AI Agent 检索和调用。
 | backend-dev    | 后端开发手册  | 安装部署、代码生成、DAO、@Table、数据权限、Shiro等后端开发指南 |
 | frontend-vue   | Vue前端手册 | 前端安装、前端CRUD、表单、表格、组件、权限等前端开发指南 |
 | frontend-beetl | 经典前端手册  | Beetl视图、Form、DataGrid、JS框架等经典前端开发指南 |
-| extend-fun     | 扩展功能专题  | BPM工作流、AI相关、CMS、SSO、OAuth2、定时任务、对象存储等扩展功能 |
+| extend-fun     | 扩展功能专题  | BPM工作流、AI相关、CMS、SSO、OAuth2、定时任务、对象存储、敏感词等扩展功能 |
 | cloud-arch     | 云服务技术架构 | SaaS、集群、微服务、分布式事务等云服务架构 |
 | support        | 技术支持与服务 | 技术支持服务、版本区别、联系方式 |
 
@@ -38,7 +38,7 @@ JeeSite 快速开发平台文档 Skills 集合，供 AI Agent 检索和调用。
 | 安装部署、环境搭建、代码生成、DAO、MyBatis、@Table、@Column、数据权限、Service、Shiro、权限认证、工具类、数据库管理、REST API、接口开发、Swagger、后端常见问题 | backend-dev |
 | Vue3、前端安装、CRUD、增删改查、BasicForm、BasicTable、表单组件、表格组件、通用组件、前端权限、v-auth、图标Icon、国际化i18n、样式主题、UnoCSS、Less、外部依赖、Vue常见问题 | frontend-vue |
 | Beetl、模板引擎、DataGrid、jqGrid、JS工具、经典前端、全栈版、自定义视图、修改登录页、后端国际化 | frontend-beetl |
-| BPM工作流、Flowable、AI知识库、RAG、CMS内容管理、消息推送、SSO单点登录、OAuth2认证、作业调度、对象存储、用户类型、可视化大屏、报表设计器、文件管理、文件预览、UniApp移动端、三员管理 | extend-fun |
+| BPM工作流、Flowable、AI知识库、RAG、CMS内容管理、消息推送、SSO单点登录、OAuth2认证、作业调度、对象存储、用户类型、可视化大屏、报表设计器、文件管理、文件预览、UniApp移动端、三员管理、敏感词 | extend-fun |
 | SaaS多租户、集群部署、负载均衡、高可用、Spring Cloud微服务、Nacos、Gateway、分布式事务Seata、分库分表、读写分离、Spring Boot Admin监控、SkyWalking链路追踪、ELK日志收集 | cloud-arch |
 | 技术支持、版本区别、授权、联系方式、商业版、社区版 | support |
 
