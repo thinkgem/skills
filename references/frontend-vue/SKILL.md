@@ -42,6 +42,7 @@ Vue、Vue3、前端分离、CRUD、表单、Form、表格、Table、组件、权
 - Vite配置
 - TypeScript
 - Ant Design Vue
+- Antdv Next
 
 ## 文档映射
 
