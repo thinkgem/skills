@@ -44,15 +44,29 @@ JeeSite 后端开发指南，包括安装部署、代码生成、持久层、业
 - Swagger文档
 - 移动端接口开发
 
+### AI 强制触发（代码生成前置条件）
+
+**以下场景必须先加载 quick-start Skill 并读取 `/standard/` 规范文档**：
+- 代码生成 / 创建 Entity / DAO / Service / Controller / Mapper XML
+- @Table / @Column / @JoinTable 注解使用
+- 字段类型选择（String/Long/BigDecimal/Date/User/Office 等）
+- Service 继承选择（CrudService vs TreeService vs CrudServiceApi）
+- 树结构实体设计
+- 主子表（一对多）设计
+- 文件上传 / 导入导出 Excel
+- 权限注解 @RequiresPermissions 格式
+- 数据/字段权限过滤
+- 事务注解 @Transactional 使用
+
 ## 文档映射
 
 | 文档标题 | sidebarTitle | permalink | 摘要与关键章节 | 关联文档 |
 |----------|-------------|-----------|---------------|---------|
 | 安装部署 | 快速开始、安装部署 | /install-deploy/ | 环境搭建、新建模块、修改包名、正式部署。关键章节：开发环境、初始化数据库、部署 | /vue-install-deploy/、/faq/ |
-| 代码生成 | 代码生成、表结构ER图 | /code-gen/ | 代码生成器、自动生成业务代码、ER图。关键章节：生成步骤、配置说明 | /dao-mybatis/、/vue-crud-view/ |
-| DAO与MyBatis | 持久层、@Table、多数据源 | /dao-mybatis/ | MyBatis DAO、@Table注解、多数据源、SQL映射。关键章节：实体类、DAO接口、多数据源 | /code-gen/、/service-datascope/ |
-| 数据权限 | 业务层、数据权限、库事务 | /service-datascope/ | 数据权限、数据范围、Service层、事务管理。关键章节：数据权限配置、事务 | /permi-shiro/、/dao-mybatis/ |
-| 权限与Shiro | 控制层、功能权限、Shiro | /permi-shiro/ | Shiro权限认证、角色权限、按钮权限、控制层。关键章节：权限配置、注解使用 | /service-datascope/、/vue-auth/ |
+| 代码生成 | 代码生成、表结构ER图 | /code-gen/ | 代码生成器、自动生成业务代码、ER图。关键章节：生成步骤、配置说明。**⚠️ 生成代码前先读 /standard/ 开发规范** | /standard/、/dao-mybatis/、/vue-crud-view/ |
+| DAO与MyBatis | 持久层、@Table、多数据源 | /dao-mybatis/ | MyBatis DAO、@Table注解、多数据源、SQL映射。关键章节：实体类、DAO接口、多数据源。**⚠️ 注解使用参照 /standard/ 规范** | /standard/、/code-gen/、/service-datascope/ |
+| 数据权限 | 业务层、数据权限、库事务 | /service-datascope/ | 数据权限、数据范围、Service层、事务管理。**⚠️ Service写法参照 /standard/ 规范** | /standard/、/permi-shiro/、/dao-mybatis/ |
+| 权限与Shiro | 控制层、功能权限、Shiro | /permi-shiro/ | Shiro权限认证、角色权限、按钮权限、控制层。**⚠️ Controller/权限参照 /standard/ 规范** | /standard/、/service-datascope/、/vue-auth/ |
 | 系统工具类 | 系统工具类 | /sys-utils/ | 系统工具类、常用API。关键章节：字符串工具、日期工具、文件工具 | /faq/ |
 | 数据库管理 | 动态维护数据、表、实体 | /dbm/ | 数据库管理、数据表建模、数据源管理。关键章节：表建模、实体生成 | /code-gen/、/dao-mybatis/ |
 | REST API | REST API | /mobile-rest-api/ | REST接口开发、API规范、移动端接口。关键章节：接口规范、认证方式 | /uniapp/、/permi-shiro/ |

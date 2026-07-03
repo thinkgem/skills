@@ -44,14 +44,24 @@ Vue、Vue3、前端分离、CRUD、表单、Form、表格、Table、组件、权
 - Ant Design Vue
 - Antdv Next
 
+### AI 强制触发（代码生成前置条件）
+
+**以下场景必须先加载 quick-start Skill 并读取 `/standard/` 规范文档**：
+- 创建 Vue CRUD 页面（list/form/api）
+- 表单字段控件选择（showType → Vue 组件映射）
+- 栅格布局配置（gridRowCol）
+- 字段验证规则书写
+- 金额/日期/数字字段格式化显示
+- 前端权限注解 v-auth 使用
+
 ## 文档映射
 
 | 文档标题 | sidebarTitle | permalink | 摘要与关键章节 | 关联文档 |
 |----------|-------------|-----------|---------------|---------|
 | 安装部署 | 快速开始、安装部署 | /vue-install-deploy/ | Vue前端环境搭建、编译打包。关键章节：环境要求、安装步骤、打包部署 | /install-deploy/、/vue-faq/ |
-| CRUD视图 | 源码解析、表单列表 | /vue-crud-view/ | CRUD增删改查视图开发、源码解析。关键章节：列表页、表单页、详情页 | /vue-basic-form/、/vue-basic-table/ |
-| 基础表单 | BasicForm 表单组件 | /vue-basic-form/ | BasicForm表单组件用法。关键章节：表单配置、校验规则、联动 | /vue-crud-view/、/vue-comp/ |
-| 基础表格 | BasicTable 表格组件 | /vue-basic-table/ | BasicTable表格组件用法。关键章节：列配置、分页、排序、筛选 | /vue-crud-view/、/vue-comp/ |
+| CRUD视图 | 源码解析、表单列表 | /vue-crud-view/ | CRUD增删改查视图开发、源码解析。**⚠️ 开发前先读 /standard/ 前端规范（showType控件映射、gridRowCol布局、验证规则）** | /standard/、/vue-basic-form/、/vue-basic-table/ |
+| 基础表单 | BasicForm 表单组件 | /vue-basic-form/ | BasicForm表单组件用法。关键章节：表单配置、校验规则、联动。**⚠️ 字段验证参照 /standard/ fieldValid 映射** | /standard/、/vue-crud-view/、/vue-comp/ |
+| 基础表格 | BasicTable 表格组件 | /vue-basic-table/ | BasicTable表格组件用法。关键章节：列配置、分页、排序、筛选。**⚠️ 列对齐/显示格式参照 /standard/ 数据列表规范** | /standard/、/vue-crud-view/、/vue-comp/ |
 | 通用组件 | 常用组件库、Hooks | /vue-comp/ | 通用组件库、Hooks用法。关键章节：组件列表、Hooks API | /vue-basic-form/、/vue-basic-table/ |
 | 配置设置 | 配置参数、主题配置 | /vue-settings/ | 前端配置参数、主题设置。关键章节：应用配置、主题定制 | /vue-style/、/vue-i18n/ |
 | 权限控制 | 前端权限、按钮权限 | /vue-auth/ | 前端权限控制、v-auth指令、菜单权限。关键章节：权限指令、路由守卫 | /permi-shiro/、/vue-crud-view/ |

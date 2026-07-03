@@ -44,6 +44,17 @@ JeeSite 平台基础知识，包括平台简介、架构特点、技术选型、
 - 什么版本支持什么
 - 在哪个版本优化或修复
 
+### AI 强制触发（代码生成前置条件）
+
+**以下场景必须加载本 Skill 并读取 `/standard/`（开发规范）文档**：
+- 生成 Entity / DAO / Service / Controller / Mapper XML 代码
+- 创建新模块或新功能
+- 数据库表设计要求
+- 前后端字段类型选择
+- 权限注解、验证注解、事务注解的使用
+- Vue 表单/列表组件配置
+- 导入导出 Excel 功能
+
 ## 文档映射
 
 | 文档标题 | sidebarTitle | permalink | 摘要与关键章节 | 关联文档 |
@@ -52,7 +63,7 @@ JeeSite 平台基础知识，包括平台简介、架构特点、技术选型、
 | 架构特点 | 架构特点 | /feature/ | 架构特点、安全机制、平台优势。关键章节：架构特点、安全、优势 | /overview/、/technology/ |
 | 技术选型 | 技术选型 | /technology/ | 技术栈详解：Spring Boot、MyBatis、Vue3、Beetl。关键章节：后端技术、前端技术 | /feature/、/jeesite-vue/ |
 | 功能介绍 | 功能介绍 | /function/ | 功能模块全景：系统管理、代码生成、工作流等。关键章节：内置功能、核心功能 | /overview/、/bpm/ |
-| 标准规范 | 标准规范 | /standard/ | 编码规范、开发规范、命名规范。关键章节：Java规范、Vue规范、数据库规范 | /catalog/、/code-gen/ |
+| 标准规范 | 标准规范 | /standard/ | **⭐ AI代码生成必读。** 编码规范、开发规范、命名规范、AI行为边界、代码生成模板约束。含完整 Entity/DAO/Service/Controller 规范、注解驱动SQL规范、字段类型映射、主子表模式、树结构规范、导入导出规范、AI禁止操作清单。关键章节：三、平台开发规范、五、AI行为边界、六、代码生成模板约束 | /catalog/、/code-gen/、/dao-mybatis/ |
 | 目录结构 | 目录结构 | /catalog/ | 项目目录结构、文件组织说明。关键章节：后端目录、前端目录 | /standard/、/install-deploy/ |
 | 参数配置 | 参数配置 | /config/ | application.yml 配置参数详解。关键章节：核心配置、数据源配置 | /install-deploy/、/faq/ |
 | 树表结构 | 树表结构 | /treetable/ | 树形结构数据表设计与实现。关键章节：数据表设计、代码生成 | /code-gen/、/dao-mybatis/ |

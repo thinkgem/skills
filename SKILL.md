@@ -17,12 +17,14 @@ JeeSite 快速开发平台文档 Skills 集合，供 AI Agent 检索和调用。
 6. **回答问题**：缓存文件有效期3天，自动更新缓存，并基于读取的文档内容回答
 7. **跨 Skill 场景**：如问题涉及多个领域，可同时加载多个子 Skill（见「跨 Skill 关联」）
 
+> ⚠️ **AI 强制规则**：在执行任何「代码生成」「创建 Entity/DAO/Service/Controller」「修改代码结构」操作之前，**必须**加载 `quick-start` Skill 并读取 `/standard/`（开发规范）文档，确认生成代码符合规范约束。详见「跨 Skill 关联」表中的"代码生成类"场景。
+
 ## Skills 列表
 
 | Skill name     | 名称    | 说明   |
 |----------------|---------|---------|
 | jeesite        | JeeSite | JeeSite 平台文档总索引  |
-| quick-start    | 快速了解    | 平台简介、架构特点、技术选型、功能介绍等基础知识、更新日志、升级方法 |
+| quick-start    | 快速了解    | 平台简介、架构特点、技术选型、功能介绍等基础知识、更新日志、升级方法、**开发规范与编码规范（代码生成必读）** |
 | backend-dev    | 后端开发手册  | 安装部署、代码生成、DAO、@Table、数据权限、Shiro等后端开发指南 |
 | frontend-vue   | Vue前端手册 | 前端安装、前端CRUD、表单、表格、组件、权限等前端开发指南 |
 | frontend-beetl | 经典前端手册  | Beetl视图、Form、DataGrid、JS框架等经典前端开发指南 |
@@ -46,10 +48,24 @@ JeeSite 快速开发平台文档 Skills 集合，供 AI Agent 检索和调用。
 
 当用户问题涉及多个领域时，同时加载多个子 Skill：
 
+### 代码生成类（**必须加载规范文档**）
+
 | 场景 | 需要加载的 Skills |
 |------|-------------------|
-| 前后端权限控制 | backend-dev + frontend-vue |
-| 代码生成 + 前端CRUD | backend-dev + frontend-vue |
+| 代码生成 / 创建实体类 / 建表 | **quick-start** + backend-dev |
+| 创建 Vue CRUD 页面 | **quick-start** + backend-dev + frontend-vue |
+| 创建 Beetl CRUD 页面 | **quick-start** + backend-dev + frontend-beetl |
+| 创建 Service / DAO / Controller | **quick-start** + backend-dev |
+| 创建树结构功能 | **quick-start** + backend-dev |
+| 主子表（一对多）功能 | **quick-start** + backend-dev |
+| 导入导出 Excel | **quick-start** + backend-dev |
+| 前端 CRUD 开发 | **quick-start** + frontend-vue（或 frontend-beetl） |
+
+### 通用场景
+
+| 场景 | 需要加载的 Skills |
+|------|-------------------|
+| 前后端权限控制 | **quick-start** + backend-dev + frontend-vue |
 | 微服务 + 分布式事务 | cloud-arch + backend-dev |
 | 单点登录 + 权限认证 | extend-fun + backend-dev |
 | AI知识库 + CMS | extend-fun + backend-dev |
