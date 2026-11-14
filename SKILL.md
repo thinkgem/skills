@@ -1,6 +1,6 @@
 ---
 name: "jeesite"
-description: "JeeSite快速开发平台文档总索引。Invoke when user asks about JeeSite documentation, or when the topic doesn't clearly match a single sub-skill."
+description: "JeeSite快速开发平台文档总索引，内含 ERM 工具脚本。Invoke when user asks about JeeSite documentation, JeeSite 文档子 Skill，或 ERM/ERMaster/.erm 文件的生成、修改、校验。"
 ---
 
 # JeeSite 文档 Skills 集合
@@ -32,6 +32,19 @@ JeeSite 快速开发平台文档 Skills 集合，供 AI Agent 检索和调用。
 | cloud-arch     | 云服务技术架构 | SaaS、集群、微服务、分布式事务等云服务架构 |
 | support        | 技术支持与服务 | 技术支持服务、版本区别、联系方式 |
 
+## 工具脚本
+
+除文档子 Skill 外，本 Skill 还提供可直接执行的脚本工具：
+
+| 工具 | 位置 | 说明 | 用法 |
+|------|------|------|------|
+| ERM 文件工具 | `scripts/erm_tools.py` | 生成、增量修改、校验、备份回退 ERMaster 的 `.erm` 文件（ER 图 / 数据库表结构设计图），输出遵循 ERMaster 真实 XML 格式，可直接被 ERMaster 打开 | 详见子 Skill `references/erm-tools/SKILL.md` |
+| 文档缓存 | `scripts/cache_docs.py` | 按 permalink 缓存并读取 JeeSite 文档 | 见「使用流程」第 4 步 |
+
+> ⚠️ **AI 强制规则**：用户提到 ERM、ERMaster、`.erm`、ER 图、数据库表结构设计图，或要求生成/修改/校验 ER 图文件时，
+> **必须**先读 `references/erm-tools/SKILL.md`（命令、JSON 规格字段、类型写法、示例），再执行 `python3 scripts/erm_tools.py <子命令> ...`；
+> 不要手写 ERM XML。改动前工具会自动备份到 `~/.cache/jeesite-erm-backups/`，出错可用 `restore` 子命令回退。
+
 ## 快速路由参考
 
 | 用户问题方向 | 推荐Skill |
@@ -43,6 +56,7 @@ JeeSite 快速开发平台文档 Skills 集合，供 AI Agent 检索和调用。
 | BPM工作流、Flowable、AI知识库、RAG、CMS内容管理、消息推送、SSO单点登录、OAuth2认证、作业调度、对象存储、用户类型、可视化大屏、报表设计器、文件管理、文件预览、UniApp移动端、三员管理、敏感词 | extend-fun |
 | SaaS多租户、集群部署、负载均衡、高可用、Spring Cloud微服务、Nacos、Gateway、分布式事务Seata、分库分表、读写分离、Spring Boot Admin监控、SkyWalking链路追踪、ELK日志收集 | cloud-arch |
 | 技术支持、版本区别、授权、联系方式、商业版、社区版 | support |
+| ERM 文件、ERMaster、.erm、ER 图、数据库表结构设计图、生成/修改/校验 ER 图文件 | 子 Skill **erm-tools**（`references/erm-tools/SKILL.md`）+ `scripts/erm_tools.py` |
 
 ## 跨 Skill 关联
 
