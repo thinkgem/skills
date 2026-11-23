@@ -166,6 +166,15 @@ DEFAULT_FONT_SIZE = 14
 DEFAULT_TABLE_HEIGHT = 75
 DEFAULT_TABLE_WIDTH = 200
 
+# 自动排版的网格参数（每行 3~4 列，排满换行）
+LAYOUT_COLUMNS = 4
+LAYOUT_START_X = 60
+LAYOUT_START_Y = 60
+LAYOUT_GAP_X = 80
+LAYOUT_GAP_Y = 80
+LAYOUT_MIN_WIDTH = 220
+LAYOUT_MIN_HEIGHT = 96
+
 # ---------------------------------------------------------------------------
 # JeeSite 约定（来自 core.erm 真实样本）
 # ---------------------------------------------------------------------------
@@ -2050,23 +2059,104 @@ def upsert_trigger(root, spec):
     return trigger
 
 
-def auto_layout(tables, start_x=100, start_y=100, per_row=4, gap_x=80, gap_y=80):
-    """为未指定坐标的表按网格自动排布。"""
-    row_height = 0
-    x, y = start_x, start_y
-    count = 0
-    for table in tables:
+def _node_rect(element):
+    """取节点占用矩形 (left, top, right, bottom)，用于重叠检测。"""
+    x = int_of(element, "x", 0)
+    y = int_of(element, "y", 0)
+    width = int_of(element, "width", DEFAULT_TABLE_WIDTH)
+    height = int_of(element, "height", DEFAULT_TABLE_HEIGHT)
+    return (x, y, x + width, y + height)
+
+
+def _rects_overlap(a, b):
+    """判断两个矩形是否相交（含边界接触视为不重叠）。"""
+    return not (a[2] <= b[0] or b[2] <= a[0] or a[3] <= b[1] or b[3] <= a[1])
+
+
+def auto_layout(tables, start_x=LAYOUT_START_X, start_y=LAYOUT_START_Y,
+                per_row=LAYOUT_COLUMNS, gap_x=LAYOUT_GAP_X, gap_y=LAYOUT_GAP_Y):
+    """
+    把一组表按网格排布：每行 per_row（默认 4）列，排满换行。
+
+    - 每列的 x 位置按该列最宽的表计算（保证横向不重叠）；
+    - 每行的 y 位置按该行最高的表计算（保证纵向不重叠）；
+    - 起始留白 start_x / start_y，间距 gap_x / gap_y。
+    """
+    if not tables:
+        return
+    count = len(tables)
+
+    # 每列宽度（取该列最宽表，且不小于 LAYOUT_MIN_WIDTH）
+    col_width = [0] * per_row
+    # 每行高度（取该行最高表，且不小于 LAYOUT_MIN_HEIGHT）
+    row_height = {}
+    for index, table in enumerate(tables):
+        col = index % per_row
+        row = index // per_row
+        col_width[col] = max(col_width[col],
+                             int_of(table, "width", DEFAULT_TABLE_WIDTH),
+                             LAYOUT_MIN_WIDTH)
+        row_height[row] = max(row_height.get(row, 0),
+                              int_of(table, "height", DEFAULT_TABLE_HEIGHT),
+                              LAYOUT_MIN_HEIGHT)
+
+    # 计算每列的起始 x、每行的起始 y（前缀和）
+    col_offsets = []
+    cursor = start_x
+    for col in range(per_row):
+        col_offsets.append(cursor)
+        cursor += col_width[col] + gap_x
+    row_offsets = []
+    cursor = start_y
+    for row in range((count + per_row - 1) // per_row):
+        row_offsets.append(cursor)
+        cursor += row_height.get(row, LAYOUT_MIN_HEIGHT) + gap_y
+
+    for index, table in enumerate(tables):
+        set_scalar(table, "x", col_offsets[index % per_row])
+        set_scalar(table, "y", row_offsets[index // per_row])
+
+
+def place_tables_in_grid(tables_to_place, other_tables=(), per_row=LAYOUT_COLUMNS,
+                         start_x=LAYOUT_START_X, start_y=LAYOUT_START_Y,
+                         gap_x=LAYOUT_GAP_X, gap_y=LAYOUT_GAP_Y):
+    """
+    把待排布的表放进网格空位（跳过已被 other_tables 占用的格子）。
+
+    适用于 apply 追加表：新表从第一个不与现有表重叠的格子开始，
+    依次向右排满 per_row 列后换行。
+    """
+    if not tables_to_place:
+        return
+    others = list(other_tables)
+    # 统一列宽，保证各列间距一致且不与已有表重叠
+    col_width = max([int_of(t, "width", DEFAULT_TABLE_WIDTH) for t in others] +
+                    [int_of(t, "width", DEFAULT_TABLE_WIDTH) for t in tables_to_place] +
+                    [LAYOUT_MIN_WIDTH])
+    occupied = [_node_rect(t) for t in others]
+    row_height = {}
+    slot = 0
+
+    for table in tables_to_place:
         width = int_of(table, "width", DEFAULT_TABLE_WIDTH)
         height = int_of(table, "height", DEFAULT_TABLE_HEIGHT)
-        if count and count % per_row == 0:
-            x = start_x
-            y += row_height + gap_y
-            row_height = 0
+        while True:
+            col = slot % per_row
+            row = slot // per_row
+            x = start_x + col * (col_width + gap_x)
+            y = start_y
+            for r in range(row):
+                y += row_height.get(r, LAYOUT_MIN_HEIGHT) + gap_y
+            rect = (x, y, x + width, y + height)
+            if any(_rects_overlap(rect, used) for used in occupied):
+                slot += 1
+                continue
+            break
         set_scalar(table, "x", x)
         set_scalar(table, "y", y)
-        x += width + gap_x
-        row_height = max(row_height, height)
-        count += 1
+        row_height[row] = max(row_height.get(row, 0), height, LAYOUT_MIN_HEIGHT)
+        occupied.append(rect)
+        slot += 1
 
 
 def drop_table(root, table_name, registry):
@@ -2274,15 +2364,24 @@ def cmd_create(args):
     registry = IdRegistry(root)
 
     tables = []
+    manual_tables = []   # 规格里显式给了坐标的表
+    auto_tables = []     # 需要自动排版的表
     for table_spec in spec.get("tables") or []:
         table = upsert_table(root, table_spec, registry,
                              default_x=0, default_y=0)
         tables.append(table)
+        if ("position" in table_spec or "x" in table_spec or "y" in table_spec):
+            manual_tables.append(table)
+        else:
+            auto_tables.append(table)
 
-    # 未显式指定坐标时自动排布
-    explicit = any(("position" in t or "x" in t) for t in (spec.get("tables") or []))
-    if tables and not explicit:
-        auto_layout(tables)
+    # 未显式指定坐标的表按网格自动排布（每行 4 列，排满换行）
+    if auto_tables:
+        if manual_tables:
+            # 已有序地放置的表会占用格子，自动表依次填入空位
+            place_tables_in_grid(auto_tables, manual_tables)
+        else:
+            auto_layout(auto_tables)
         for table in tables:
             reorder_children(table, TABLE_TAGS)
 
@@ -2336,8 +2435,21 @@ def cmd_apply(args):
             settings = ET.SubElement(root, "settings")
         set_scalar(settings, "database", database)
 
+    # 新增的表需要自动排版（跳过被现有表占用的格子）
+    new_tables = []
     for table_spec in spec.get("tables") or []:
-        upsert_table(root, table_spec, registry)
+        table_name = (table_spec.get("name") or "").strip()
+        existed = any(text_of(t, "physical_name") == table_name
+                      for t in root.findall("contents/table"))
+        table = upsert_table(root, table_spec, registry)
+        if (not existed and "position" not in table_spec
+                and "x" not in table_spec and "y" not in table_spec):
+            new_tables.append(table)
+
+    if new_tables:
+        new_ids = {id(t) for t in new_tables}
+        others = [t for t in root.findall("contents/table") if id(t) not in new_ids]
+        place_tables_in_grid(new_tables, others)
 
     for relation_spec in spec.get("relations") or []:
         upsert_relation(root, relation_spec, registry)
