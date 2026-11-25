@@ -30,6 +30,7 @@
 | frontend-beetl | 经典前端手册  | Beetl视图、Form、DataGrid、JS框架等经典前端开发指南 |
 | extend-fun     | 扩展功能专题  | BPM工作流、AI相关、CMS、SSO、OAuth2、定时任务、对象存储、敏感词等扩展功能 |
 | cloud-arch     | 云服务技术架构 | SaaS、集群、微服务、分布式事务等云服务架构 |
+| erm-tools      | ERM 模型文件工具 | 快速生成表、修改表 *.erm 模型文件 |
 | support        | 技术支持与服务 | 技术支持服务、版本区别、联系方式 |
 
 ### 用户问题，推荐方向
